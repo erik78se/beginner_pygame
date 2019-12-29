@@ -14,7 +14,7 @@ win = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Hoppspel")
 
 # Välj en "fördröjning" så vi kan få spelet att gå lagom fort
-GAME_DELAY = 20
+GAME_DELAY = 200
 
 # Sätt storlekar på:
 #   spelaren:      width, height
@@ -32,6 +32,8 @@ jumpCount = 10
 
 # Säg till att vi kan starta
 run = True
+
+print(pos_y)
 
 while run:
     pygame.time.delay(GAME_DELAY)
@@ -61,14 +63,18 @@ while run:
         if keys[pygame.K_SPACE]:
             isJump = True
 
-    else:  # Om vi kommer hit, så hoppar vi -> då händer detta...
+    else:  # Om vi kommer hit, så hoppar vi -> då händer detta...  y = x * abs(x)
+        # Höjden ökar i början (jumpCount: 10)
+        # ... och avtar när jumpCount närmar sig 0.
+        # Höjden minskar igen då jumpCount < 0
+        # tills jumpCount < -10.
         if jumpCount >= -10:
-            pos_y -= (jumpCount * abs(jumpCount)) * 0.5
+            pos_y -= ( jumpCount * abs(jumpCount) )
             jumpCount -= 1
-        else:  # This will execute if our jump is finished
+        else:  # Reset när vi är klara med att hoppa.
             jumpCount = 10
             isJump = False
-            # Resetting our Variables
+
 
     # Här ritar vi in bakgund och spelaren i fönstret.
     win.fill((0, 0, 0))  # Fyll med Röd:0,Grön:0,Blå:0
